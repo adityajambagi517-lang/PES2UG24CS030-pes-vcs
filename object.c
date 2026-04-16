@@ -124,6 +124,32 @@ int object_write(ObjectType type, const void *data, size_t len, ObjectID *id_out
     free(full);
     return 0;
 }
+
+char dir[512];
+strncpy(dir, path, sizeof(dir));
+char *slash = strrchr(dir, '/');
+*slash = '\0';
+
+mkdir(dir, 0755);
+
+char tmp_path[512];
+snprintf(tmp_path, sizeof(tmp_path), "%s/tmpXXXXXX", dir);
+
+int fd = mkstemp(tmp_path);
+if (fd < 0) {
+    free(full);
+    return -1;
+}
+
+if (write(fd, full, total_len) != (ssize_t)total_len) {
+    close(fd);
+    unlink(tmp_path);
+    free(full);
+    return -1;
+}
+
+fsync(fd);
+close(fd);
 int object_read(const ObjectID *id, ObjectType *type_out, void **data_out, size_t *len_out) {
     return -1;
 
