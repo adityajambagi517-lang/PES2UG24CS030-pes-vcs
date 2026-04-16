@@ -134,9 +134,6 @@ int tree_serialize(const Tree *tree, void **data_out, size_t *len_out) {
 // tree.c
 
 
-
-
-// STEP 2: recursive helper
 static int build_tree(Index *index, const char *prefix, ObjectID *out_id) {
     Tree tree;
     tree.count = 0;
@@ -148,7 +145,20 @@ static int build_tree(Index *index, const char *prefix, ObjectID *out_id) {
 
         if (strncmp(ie->path, prefix, prefix_len) != 0) continue;
 
-        // (logic incomplete for now)
+        const char *rest = ie->path + prefix_len;
+        if (*rest == '/') rest++;
+
+        const char *slash = strchr(rest, '/');
+
+        if (!slash) {
+            TreeEntry *te = &tree.entries[tree.count++];
+
+            te->mode = ie->mode;
+            te->hash = ie->hash;
+
+            strncpy(te->name, rest, sizeof(te->name));
+            te->name[sizeof(te->name)-1] = '\0';
+        }
     }
 
     return -1;
