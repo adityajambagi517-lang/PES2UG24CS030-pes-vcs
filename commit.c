@@ -193,43 +193,67 @@ int head_update(const ObjectID *new_commit) {
 //   - head_update       : moves the branch pointer to your new commit
 //
 // Returns 0 on success, -1 on error.
-// commit.c
-
-
-int object_write(ObjectType type, const void *data, size_t len, ObjectID *id_out);
-
 int commit_create(const char *message, ObjectID *commit_id_out) {
     if (!message || !commit_id_out) return -1;
 
+    // 1. Build tree from index
     ObjectID tree_id;
-    if (tree_from_index(&tree_id) != 0) return -1;
+    if (tree_from_index(&tree_id) != 0) {
+        fprintf(stderr, "error: failed to build tree\n");
+        return -1;
+    }
 
+    // 2. Prepare commit struct
     Commit commit;
     memset(&commit, 0, sizeof(commit));
 
     commit.tree = tree_id;
 
+    // 3. Read parent (if exists)
     ObjectID parent_id;
     if (head_read(&parent_id) == 0) {
         commit.parent = parent_id;
         commit.has_parent = 1;
+    } else {
+        commit.has_parent = 0;
     }
 
+    // 4. Set author + timestamp
     const char *author = pes_author();
     if (!author) author = "unknown";
 
     strncpy(commit.author, author, sizeof(commit.author));
+    commit.author[sizeof(commit.author) - 1] = '\0';
+
     commit.timestamp = (uint64_t)time(NULL);
 
+    // 5. Set message
     strncpy(commit.message, message, sizeof(commit.message));
+    commit.message[sizeof(commit.message) - 1] = '\0';
 
+    // 6. Serialize commit
     void *data = NULL;
     size_t len = 0;
 
     if (commit_serialize(&commit, &data, &len) != 0) {
+        fprintf(stderr, "error: failed to serialize commit\n");
+        return -1;
+    }
+
+    // 7. Write commit object
+    if (object_write(OBJ_COMMIT, data, len, commit_id_out) != 0) {
+        fprintf(stderr, "error: failed to write commit\n");
+        free(data);
         return -1;
     }
 
     free(data);
-    return -1;
+
+    // 8. Update HEAD
+    if (head_update(commit_id_out) != 0) {
+        fprintf(stderr, "error: failed to update HEAD\n");
+        return -1;
+    }
+
+    return 0;
 }
