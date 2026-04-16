@@ -131,46 +131,33 @@ int tree_serialize(const Tree *tree, void **data_out, size_t *len_out) {
 // Returns 0 on success, -1 on error.
 // tree.c
 
-#include "index.h"
-#include "tree.h"
-#include "pes.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <dirent.h>
-#include <sys/stat.h>
+// tree.c
 
-int object_write(ObjectType type, const void *data, size_t len, ObjectID *id_out);
 
-#define MODE_FILE 0100644
-#define MODE_EXEC 0100755
-#define MODE_DIR  0040000
 
-uint32_t get_file_mode(const char *path) {
-    struct stat st;
-    if (lstat(path, &st) != 0) return 0;
 
-    if (S_ISDIR(st.st_mode)) return MODE_DIR;
-    if (st.st_mode & S_IXUSR) return MODE_EXEC;
-    return MODE_FILE;
-}
+// STEP 2: recursive helper
+static int build_tree(Index *index, const char *prefix, ObjectID *out_id) {
+    Tree tree;
+    tree.count = 0;
 
-// PROVIDED functions (same as original)
+    size_t prefix_len = strlen(prefix);
 
-int tree_parse(const void *data, size_t len, Tree *tree_out) {
-    tree_out->count = 0;
-    return 0;
-}
+    for (int i = 0; i < index->count; i++) {
+        IndexEntry *ie = &index->entries[i];
 
-int tree_serialize(const Tree *tree, void **data_out, size_t *len_out) {
+        if (strncmp(ie->path, prefix, prefix_len) != 0) continue;
+
+        // (logic incomplete for now)
+    }
+
     return -1;
 }
 
-// STEP 1
 int tree_from_index(ObjectID *id_out) {
     Index index;
 
     if (index_load(&index) != 0) return -1;
 
-    return -1;
+    return build_tree(&index, "", id_out);
 }
