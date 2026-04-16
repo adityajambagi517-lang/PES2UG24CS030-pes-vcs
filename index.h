@@ -29,7 +29,7 @@ typedef struct {
 int index_load(Index *index);
 
 // Save the index to .pes/index using atomic write (temp file + rename).
-int index_save(const Index *index);
+int index_save(Index *index);
 
 // Stage a file: read its contents, write as a blob, update/add index entry.
 int index_add(Index *index, const char *path);
