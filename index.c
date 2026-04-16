@@ -167,9 +167,32 @@ int index_save(const Index *index) {
 //   - index_find                       : checking if the file is already staged
 //
 // Returns 0 on success, -1 on error.
+IndexEntry* index_find(Index *index, const char *path) {
+    for (int i = 0; i < index->count; i++) {
+        if (strcmp(index->entries[i].path, path) == 0)
+            return &index->entries[i];
+    }
+    return NULL;
+}
+
+int index_remove(Index *index, const char *path) {
+    return -1;
+}
+
+int index_status(const Index *index) {
+    return 0;
+}
+
+// STEP 1
+int index_load(Index *index) {
+    index->count = 0;
+    return 0;
+}
+
+int index_save(Index *index) {
+    return -1;
+}
+
 int index_add(Index *index, const char *path) {
-    // TODO: Implement file staging
-    // (See Lab Appendix for logical steps)
-    (void)index; (void)path;
     return -1;
 }
