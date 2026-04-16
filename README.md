@@ -1,8 +1,8 @@
 # PES-VCS: Version Control System Report
 
-**Name:** Abhirama H Y
+**Name:** Aditya Basavaraj Jambagi
 
-**SRN:** PES2UG24CS023
+**SRN:** PES2UG24CS030
 
 **Section:** A
 
@@ -29,10 +29,13 @@ In this phase, we implemented a content-addressable object store. Every piece of
 ### Phase 1 Verification
 
 **📸 Screenshot 1A: Output of `./test_objects`**  
-![alt text](screenshots/1A.jpeg)
+<img width="1096" height="332" alt="WhatsApp Image 2026-04-16 at 17 25 49" src="https://github.com/user-attachments/assets/0632a10f-9a7a-4a3a-b6ff-987297dfd54f" />
+
 
 **📸 Screenshot 1B: `find .pes/objects -type f` showing sharded structure**  
-![alt text](screenshots/1B.jpeg)
+<img width="1103" height="155" alt="WhatsApp Image 2026-04-16 at 17 27 34" src="https://github.com/user-attachments/assets/0e759a2d-145c-4f97-bd55-77ad2fbf6abc" />
+
+
 
 ---
 
@@ -47,10 +50,12 @@ Phase 2 focused on directory representation. Unlike blobs (which store file cont
 ### Phase 2 Verification
 
 **📸 Screenshot 2A: Output of `./test_tree`**  
-![alt text](screenshots/2A.jpeg)
+<img width="1098" height="228" alt="WhatsApp Image 2026-04-16 at 18 05 31" src="https://github.com/user-attachments/assets/11fe9cef-07ff-44cd-9f1e-72376ad2a92b" />
+
 
 **📸 Screenshot 2B: `xxd` view of a raw tree object**  
-![alt text](screenshots/2B.jpeg)
+<img width="1225" height="472" alt="WhatsApp Image 2026-04-16 at 18 29 07" src="https://github.com/user-attachments/assets/66b3db7a-b8c7-4205-9e1c-deb13f3002b9" />
+
 
 ---
 
@@ -65,10 +70,12 @@ The index acts as the "preparation area" for commits. We implemented a human-rea
 ### Phase 3 Verification
 
 **📸 Screenshot 3A: `pes init` → `pes add` → `pes status` sequence**  
-![alt text](screenshots/3A.jpeg)
+<img width="1160" height="666" alt="WhatsApp Image 2026-04-16 at 18 52 10" src="https://github.com/user-attachments/assets/eb1013da-2f3f-4730-ace7-9a34c5d8744c" />
+
 
 **📸 Screenshot 3B: `cat .pes/index` showing human-readable content**  
-![alt text](screenshots/3B.jpeg)
+<img width="976" height="123" alt="WhatsApp Image 2026-04-16 at 18 56 37" src="https://github.com/user-attachments/assets/daaf2e3e-4570-4d96-bb9d-6c81ddcd3b03" />
+
 
 ---
 
@@ -83,13 +90,16 @@ This final implementation phase ties everything together into a commit object, c
 ### Phase 4 Verification
 
 **📸 Screenshot 4A: Output of `./pes log` showing history**  
-![alt text](screenshots/4A.jpeg)
+<img width="1193" height="718" alt="WhatsApp Image 2026-04-16 at 19 06 08" src="https://github.com/user-attachments/assets/11fe3f1e-7928-428c-bdaf-18fe5a888430" />
+
 
 **📸 Screenshot 4B: `find .pes -type f` showing object store growth**  
-![alt text](screenshots/4B.jpeg)
+<img width="1081" height="340" alt="WhatsApp Image 2026-04-16 at 19 07 33" src="https://github.com/user-attachments/assets/8671c26d-8760-4484-81f8-bb9a4c357056" />
+
 
 **📸 Screenshot 4C: `cat .pes/HEAD` and branch reference verification**  
-![alt text](screenshots/4C.jpeg)
+<img width="1083" height="127" alt="WhatsApp Image 2026-04-16 at 19 10 15" src="https://github.com/user-attachments/assets/990c9711-8a99-4192-87f8-ada556fce266" />
+
 
 ---
 
@@ -98,9 +108,9 @@ This final implementation phase ties everything together into a commit object, c
 All modules (Object, Tree, Index, Commit) were integrated into the main `pes` binary. The system supports full versioning workflows including initializing repos, staging changes, and viewing persistent history.
 
 **📸 Screenshot Final: Full integration test output (`bash test_sequence.sh`)**  
-![alt text](screenshots/FINAL-01.jpeg)
-![alt text](screenshots/FINAL-02.jpeg)
-![alt text](screenshots/FINAL-03.jpeg)
+<img width="961" height="822" alt="Screenshot 2026-04-16 193327" src="https://github.com/user-attachments/assets/2fe66399-eea8-4679-9242-6190cd766b68" />
+<img width="825" height="727" alt="Screenshot 2026-04-16 193352" src="https://github.com/user-attachments/assets/358a4e3a-e145-42e8-ab78-b84312b058e1" />
+
 
 ---
 
