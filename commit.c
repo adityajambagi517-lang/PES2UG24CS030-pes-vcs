@@ -197,15 +197,12 @@ int head_update(const ObjectID *new_commit) {
 
 
 int object_write(ObjectType type, const void *data, size_t len, ObjectID *id_out);
-int object_read(const ObjectID *id, ObjectType *type_out, void **data_out, size_t *len_out);
 
 int commit_create(const char *message, ObjectID *commit_id_out) {
     if (!message || !commit_id_out) return -1;
 
     ObjectID tree_id;
-    if (tree_from_index(&tree_id) != 0) {
-        return -1;
-    }
+    if (tree_from_index(&tree_id) != 0) return -1;
 
     Commit commit;
     memset(&commit, 0, sizeof(commit));
@@ -216,9 +213,23 @@ int commit_create(const char *message, ObjectID *commit_id_out) {
     if (head_read(&parent_id) == 0) {
         commit.parent = parent_id;
         commit.has_parent = 1;
-    } else {
-        commit.has_parent = 0;
     }
 
+    const char *author = pes_author();
+    if (!author) author = "unknown";
+
+    strncpy(commit.author, author, sizeof(commit.author));
+    commit.timestamp = (uint64_t)time(NULL);
+
+    strncpy(commit.message, message, sizeof(commit.message));
+
+    void *data = NULL;
+    size_t len = 0;
+
+    if (commit_serialize(&commit, &data, &len) != 0) {
+        return -1;
+    }
+
+    free(data);
     return -1;
 }
